@@ -1,9 +1,9 @@
-import { getMeals } from "@/services/meals.services";
+import { fetchDailyEntries } from "@/services/daily-entries.services";
 import { useMealsStore } from "@/stores/meals.store";
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue";
 
-export const useMealFetch = () => {
+export const useDailyLogsFetch = () => {
   const isLoading = ref(true);
 
   const mealsStore = useMealsStore();
@@ -11,7 +11,7 @@ export const useMealFetch = () => {
 
   const fetchMeals = async () => {
     if (cachedMeals.value.mealsData.length === 0) {
-      const { data } = await getMeals();
+      const { data } = await fetchDailyEntries();
       if (data) mealsStore.setMeals(data);
       isLoading.value = false;
     } else {

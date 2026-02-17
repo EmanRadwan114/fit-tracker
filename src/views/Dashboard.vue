@@ -13,6 +13,6 @@ const { userDailyNums, isLoading } = useDailyInfo();
 <template>
   <Loader v-if="isLoading" />
   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" v-else>
-    <InfoCard v-for="num in userDailyNums" :cardData="num" />
+    <InfoCard v-for="num in userDailyNums" :cardData="num" :key="num.title" />
   </div>
 </template>
