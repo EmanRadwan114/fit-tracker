@@ -1,13 +1,21 @@
 <script setup lang="ts">
+import AddModal from "@/components/modals/AddModal.vue";
 import DeleteModal from "@/components/modals/DeleteModal.vue";
+import ViewEditModal from "@/components/modals/ViewEditModal.vue";
 import Loader from "@/components/ui/Loader.vue";
-import { useDailyLogsFetch } from "@/composables/fetch-logs.composable";
-import { deleteMealLog } from "@/services/daily-entries.services";
-import { useMealsStore } from "@/stores/meals.store";
+import { useFormateDate } from "@/composables/useFormateDate";
+import { useDailyLogsFetch } from "@/composables/useLogFetch";
 import type { IDailyEntries } from "@/types/meals.types";
-import { Eye, Pencil, Trash2, X } from "lucide-vue-next";
-import { ref } from "vue";
-import { useToast } from "vue-toastification";
+import { calculateMacro } from "@/utils/meals.helpers";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Eye,
+  Pencil,
+  Trash2,
+  X,
+} from "lucide-vue-next";
+import { computed, ref } from "vue";
 
 interface IProps {}
 
@@ -15,12 +23,19 @@ const props = withDefaults(defineProps<IProps>(), {});
 
 // refs & reactives
 const selectedMeal = ref<IDailyEntries | null>(null);
-const activeModal = ref<"view" | "edit" | "delete" | null>(null);
+const activeModal = ref<"view" | "edit" | "delete" | "add" | null>(null);
 
 // hooks
 const { cachedMeals, isLoading } = useDailyLogsFetch();
-const mealsStore = useMealsStore();
-const toast = useToast();
+const { dateFilter, changeDate, isToday, today } = useFormateDate();
+
+// computed
+const filteredMeals = computed(() => {
+  return cachedMeals.value.mealsData.filter((meal) => {
+    const mealDate = meal.log_date?.split("T")[0];
+    return mealDate === dateFilter.value;
+  });
+});
 
 // handlers
 const handleAction = (
@@ -35,46 +50,78 @@ const closeModal = () => {
   activeModal.value = null;
   selectedMeal.value = null;
 };
-
-const handleDelete = async () => {
-  const mealId = selectedMeal.value?.id;
-  if (!mealId) return;
-
-  try {
-    const { error } = await deleteMealLog(mealId);
-
-    if (error) {
-      toast.error(error.message);
-      return;
-    }
-
-    mealsStore.removeEntry(selectedMeal.value?.id);
-    toast.success("Log deleted successfully");
-    closeModal();
-  } catch (err: any) {
-    toast.error(err?.message || "An unexpected error occurred");
-    console.error(err);
-  }
-};
 </script>
 
 <template>
+  <!-- header actions -->
+  <header
+    class="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4"
+  >
+    <h2 class="text-2xl font-semibold text-center md:text-start">
+      Your Logged Meals
+    </h2>
+
+    <div class="flex flex-col md:flex-row gap-4 md:w-2/3 lg:w-1/2 xl:w-1/3">
+      <!-- date filter -->
+      <div
+        class="flex items-center justify-center gap-4 bg-white p-2 rounded-md shadow-sm border border-neutral-200 flex-1"
+      >
+        <!-- Previous Button -->
+        <button
+          @click="changeDate(-1)"
+          class="p-1 hover:bg-neutral-100 rounded-full transition-colors"
+        >
+          <ChevronLeft :size="20" />
+        </button>
+
+        <!-- Date Display/Input -->
+        <input
+          type="date"
+          v-model="dateFilter"
+          :max="today"
+          class="outline-none font-medium text-sm cursor-pointer"
+        />
+
+        <!-- Next Button -->
+        <button
+          @click="changeDate(1)"
+          :disabled="isToday"
+          class="p-1 rounded-full transition-colors disabled:opacity-30 disabled:cursor-not-allowed hover:bg-neutral-100"
+        >
+          <ChevronRight :size="20" />
+        </button>
+      </div>
+
+      <!-- add meal -->
+      <Button variant="primary" @click="activeModal = 'add'" class="flex-1"
+        >Add Meal</Button
+      >
+    </div>
+  </header>
+
   <!-- displayed logs -->
-  <div class="overflow-auto">
-    <Loader v-if="isLoading" />
-    <table v-else class="w-full bg-white shadow-md rounded-sm">
+  <Loader v-if="isLoading" />
+  <div
+    class="overflow-auto shadow-lg rounded-sm"
+    v-else-if="filteredMeals.length > 0"
+  >
+    <table class="w-full bg-white border-collapse">
       <thead>
-        <tr class="capitalize bg-primary/50 border-b border-neutral-300">
+        <tr class="bg-primary/50 border-b border-neutral-300 capitalize">
           <th class="text-start px-8 py-5">name</th>
-          <th class="text-start px-8 py-5">weight</th>
-          <th class="text-start px-8 py-5">calories (kcal)</th>
-          <th class="text-start px-8 py-5">date</th>
+          <th class="text-start px-8 py-5">
+            serving size <span class="normal-case">(g)</span>
+          </th>
+          <th class="text-start px-8 py-5">
+            calories <span class="normal-case">(kcal)</span>
+          </th>
+          <th class="text-start px-8 py-5">log date</th>
           <th class="text-start px-8 py-5">actions</th>
         </tr>
       </thead>
       <tbody>
         <tr
-          v-for="meal in cachedMeals.mealsData"
+          v-for="meal in filteredMeals"
           :key="meal.id"
           class="border-b border-neutral-300"
         >
@@ -82,10 +129,10 @@ const handleDelete = async () => {
             {{ meal.meals?.name }}
           </td>
           <td class="px-8 py-5">
-            {{ meal.meals?.serving_size }}
+            {{ meal?.serving_size }}
           </td>
           <td class="px-8 py-5">
-            {{ meal.meals?.calories }}
+            {{ calculateMacro(meal?.serving_size, meal?.meals?.calories || 0) }}
           </td>
           <td class="px-8 py-5">
             {{ meal.log_date?.split("T")[0] }}
@@ -111,11 +158,34 @@ const handleDelete = async () => {
       </tbody>
     </table>
   </div>
+  <div v-else class="flex items-center justify-center h-[40vh]">
+    <p class="font-semibold text-2xl leading-relaxed">
+      No meals found 😔<br />
+      Add some meals
+    </p>
+  </div>
 
   <!-- delete modal -->
   <DeleteModal
-    @confirm="handleDelete"
+    :meal="selectedMeal"
     @cancel="closeModal"
     v-if="activeModal === 'delete'"
   />
+
+  <!-- view edit modal -->
+  <ViewEditModal
+    :meal="selectedMeal"
+    :calories="
+      calculateMacro(
+        selectedMeal?.serving_size || 0,
+        selectedMeal?.meals?.calories || 0,
+      )
+    "
+    :type="activeModal"
+    @close="closeModal"
+    v-if="activeModal === 'view' || activeModal === 'edit'"
+  />
+
+  <!--add modal -->
+  <AddModal @close="closeModal" v-if="activeModal === 'add'" />
 </template>

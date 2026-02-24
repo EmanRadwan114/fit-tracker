@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<IProps>(), {});
 <template>
   <div
     :class="[
-      `container p-5 sm:max-w-xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl m-auto`,
+      `container p-5 sm:max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-7xl m-auto`,
       containerClass,
     ]"
   >

@@ -21,7 +21,9 @@ const props = withDefaults(defineProps<IProps>(), {});
     <div class="flex justify-between items-end">
       <div class="flex gap-2 items-end">
         <span class="text-3xl font-semibold">{{ cardData?.data }}</span>
-        <span class="mb-0.5 font-medium text-neutral-700">kcal</span>
+        <span class="mb-0.5 font-medium text-neutral-700">{{
+          cardData?.title.includes("calories") ? "kcal" : "g"
+        }}</span>
       </div>
 
       <div>

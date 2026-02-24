@@ -6,6 +6,7 @@ import Meals from "@/views/Meals.vue";
 import Profile from "@/views/Profile.vue";
 import Home from "@/views/Home.vue";
 import { authGuard } from "@/guards/auth.gard";
+import NotFound from "@/components/NotFound.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,6 +32,7 @@ const router = createRouter({
         { path: "profile", component: Profile, name: "profile" },
       ],
     },
+    { path: "/:pathMatch(.*)*", component: NotFound },
   ],
 });
 

@@ -8,3 +8,7 @@ export type TMeal = Tables<"meals">;
 export type TUser = Tables<"users">;
 export type TCategory = Tables<"meals-categories">;
 export type TDailyEntries = Tables<"daily-entries">;
+
+export type TMealInsert = Omit<TMeal, "id" | "created_at">;
+export type TCategoryInsert = Omit<TCategory, "id" | "created_at">;
+export type TDailyEntriesInsert = Omit<TDailyEntries, "id" | "created_at">;

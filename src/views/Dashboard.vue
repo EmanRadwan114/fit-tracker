@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InfoCard from "@/components/ui/InfoCard.vue";
 import Loader from "@/components/ui/Loader.vue";
-import { useDailyInfo } from "@/composables/daily-info.composable";
+import { useDailyInfo } from "@/composables/useDailyInfo";
 
 interface IProps {}
 

@@ -3,7 +3,8 @@ import proteinImg from "@/assets/images/steak-svgrepo-com.svg";
 import carbsImg from "@/assets/images/bread-bun-svgrepo-com.svg";
 import fatsImg from "@/assets/images/butter-svgrepo-com.svg";
 import type { IDailyEntries, IMeals } from "@/types/meals.types";
-import { useDailyLogsFetch } from "./fetch-logs.composable";
+import { useDailyLogsFetch } from "./useLogFetch";
+import { calculateMacro } from "@/utils/meals.helpers";
 
 export const useDailyInfo = () => {
   const today = new Date().toISOString().split("T")[0];
@@ -15,12 +16,18 @@ export const useDailyInfo = () => {
       .reduce(
         (acc, curr: IDailyEntries) => {
           const meal = curr.meals;
+          const serving_size = curr.serving_size;
+
+          const calories = calculateMacro(serving_size, meal?.calories ?? 0);
+          const protein = calculateMacro(serving_size, meal?.protein ?? 0);
+          const carbs = calculateMacro(serving_size, meal?.carbs ?? 0);
+          const fats = calculateMacro(serving_size, meal?.fats ?? 0);
 
           return {
-            calories: acc.calories + (meal?.calories ?? 0),
-            protein: acc.protein + (meal?.protein ?? 0),
-            carbs: acc.carbs + (meal?.carbs ?? 0),
-            fats: acc.fats + (meal?.fats ?? 0),
+            calories: acc.calories + calories,
+            protein: acc.protein + protein,
+            carbs: acc.carbs + carbs,
+            fats: acc.fats + fats,
           };
         },
         { calories: 0, protein: 0, carbs: 0, fats: 0 },
