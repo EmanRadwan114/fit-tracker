@@ -1,18 +1,16 @@
-import { supabase, supabaseKey } from "@/utils/supabase";
+import { supabase } from "@/utils/supabase";
 
 // get meals
 export const fetchMealData = async (searchTerm: string) => {
-  const response = await fetch(
-    `https://aulmhefinbmppfiouebn.supabase.co/functions/v1/searchMeals?searchTerm=${searchTerm}`,
+  const { data, error } = await supabase.functions.invoke(
+    `searchMeals?searchTerm=${encodeURIComponent(searchTerm)}`,
     {
-      headers: {
-        apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
-      },
+      method: "GET",
     },
   );
-  const meals = await response.json();
-  return meals;
+
+  if (error) throw error;
+  return data;
 };
 
 // add new meal
