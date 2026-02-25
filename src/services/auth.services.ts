@@ -33,7 +33,7 @@ export const userLoginWithGoogle = async () => {
         access_type: "offline",
         prompt: "select_account",
       },
-      redirectTo: window.location.origin,
+      redirectTo: "https://your-netlify-app.netlify.app",
       skipBrowserRedirect: false,
     },
   });
