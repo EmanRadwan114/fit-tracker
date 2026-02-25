@@ -13,4 +13,13 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      "/food-api": {
+        target: "https://world.openfoodfacts.org",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/food-api/, ""),
+      },
+    },
+  },
 });

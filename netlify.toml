@@ -1,3 +1,11 @@
+# 1. Proxy rule for API (Must be first)
+[[redirects]]
+  from = "/food-api/*"
+  to = "https://world.openfoodfacts.org"
+  status = 200
+  force = true
+
+# 2. SPA fallback rule (Must be last)
 [[redirects]]
   from = "/*"
   to = "/index.html"
