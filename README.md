@@ -1,42 +1,38 @@
-# .
+# 🥗 Fit Tracker
 
-This template should help get you started developing with Vue 3 in Vite.
+A modern and responsive diet and nutrition tracker built using **Vue 3 (Composition API)**, **TypeScript**, **Tailwind CSS**, **Pinia**, **Supabase**, and **Open Food Facts API**.
 
-## Recommended IDE Setup
+Fit Tracker emphasizes data accuracy, and seamless user experience. It features a sleek dashboard and an integration with the **Open Food Facts API** to help users monitor their daily intake and hit their health goals with precision.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+This project showcases my ability to architect complex state-managed applications and integrate robust backend-as-a-service solutions.
 
-## Recommended Browser Setup
+## 🚀 Features
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+- ✨ **Modern Dashboard**: Clean and responsive layout for daily nutrition tracking.
+- 🔐 **Secure Auth**: Google OAuth and Email/Password authentication via **Supabase**.
+- 🍎 **Smart Food Search**: Instant product lookup using the **Open Food Facts API**.
+- 📈 **Goal Management**: Dynamic calorie and weight targeting logic.
+- ⚡ **Global State**: Reactive and persistent data management with **Pinia**.
+- 🎨 **Sleek UI**: Styled with **Tailwind CSS** for a utility-first, modern aesthetic.
+- 📱 **Fully Responsive**: Optimized for mobile, tablet, and desktop screens.
+- 🧩 **Modular Architecture**: Reusable Vue components and clean Composable logic.
 
-## Type Support for `.vue` Imports in TS
+## ✨ Implementation Highlights
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- **Optimized Data Fetching**: Intelligent caching logic to minimize redundant API calls.
+- **Secure Backend**: Row Level Security (RLS) implemented in Supabase for user data protection.
+- **Clean Composables**: Abstracted business logic (Auth, Profile, Food Search) for high maintainability.
 
-## Customize configuration
+## 📦 Getting Started
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Prerequisites
 
-## Project Setup
+- Node.js (Latest LTS recommended)
+- A Supabase Project (URL & Anon Key)
 
-```sh
-npm install
-```
+### Installation
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+1. Clone the repository:
+   ```bash
+   git clone https://github.com
+   ```
