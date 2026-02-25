@@ -88,7 +88,10 @@ const handleSubmit = async () => {
         <!-- Add this: No Match Message -->
         <div
           v-if="
-            !isSearching && searchQuery.length > 2 && searchResults.length === 0
+            !isSearching &&
+            searchQuery.length > 2 &&
+            searchResults.length === 0 &&
+            !selectedMeal
           "
           class="absolute top-full left-0 w-full bg-white border border-gray-300 z-50 shadow-lg p-4 text-center text-gray-500 text-sm"
         >
