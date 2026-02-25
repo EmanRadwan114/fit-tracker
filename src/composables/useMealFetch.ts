@@ -64,7 +64,7 @@ export function useMealSearch() {
       } finally {
         isSearching.value = false;
       }
-    }, 500);
+    }, 1000);
   };
 
   /**

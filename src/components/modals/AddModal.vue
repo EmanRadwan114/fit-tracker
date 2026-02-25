@@ -80,9 +80,21 @@ const handleSubmit = async () => {
         />
 
         <!-- Search Results Dropdown -->
+        <!-- Search Results Dropdown -->
         <div v-if="isSearching" class="text-xs text-gray-500 mt-1">
           Searching...
         </div>
+
+        <!-- Add this: No Match Message -->
+        <div
+          v-if="
+            !isSearching && searchQuery.length > 2 && searchResults.length === 0
+          "
+          class="absolute top-full left-0 w-full bg-white border border-gray-300 z-50 shadow-lg p-4 text-center text-gray-500 text-sm"
+        >
+          No matches found for "{{ searchQuery }}"
+        </div>
+
         <ul
           v-if="searchResults.length > 0"
           class="absolute top-full left-0 w-full bg-white border border-gray-300 z-50 shadow-lg max-h-48 overflow-y-auto"
