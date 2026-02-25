@@ -33,7 +33,7 @@ export const userLoginWithGoogle = async () => {
         access_type: "offline",
         prompt: "select_account",
       },
-      redirectTo: "https://your-netlify-app.netlify.app",
+      redirectTo: "https://fit-health-tracker.netlify.app",
       skipBrowserRedirect: false,
     },
   });
