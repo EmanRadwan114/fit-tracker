@@ -13,8 +13,8 @@ const router = useRouter();
 
 const navLinks: { path: string; title: string; icon: Component }[] = [
   { path: "/dashboard", title: "home", icon: House },
-  { path: "/dashboard/meals", title: "meals", icon: Salad },
-  { path: "/dashboard/profile", title: "profile", icon: User },
+  { path: "/meals", title: "meals", icon: Salad },
+  { path: "/profile", title: "profile", icon: User },
 ];
 
 const isSideNavOpen = ref(false);

@@ -28,8 +28,8 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         { path: "", component: Dashboard, name: "dashboard" },
-        { path: "meals", component: Meals, name: "meals" },
-        { path: "profile", component: Profile, name: "profile" },
+        { path: "/meals", component: Meals, name: "meals" },
+        { path: "/profile", component: Profile, name: "profile" },
       ],
     },
     { path: "/:pathMatch(.*)*", component: NotFound },

@@ -2,12 +2,14 @@
 import { useValidateLogin } from "@/validation/login.validation";
 import FormInput from "./ui/FormInput.vue";
 import FormLayout from "./ui/FormLayout.vue";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { userLogin } from "@/services/auth.services";
 import type { ILogin } from "@/types/auth.types";
 import ErrorMsg from "./ui/ErrorMsg.vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth.store";
+import { supabase } from "@/utils/supabase";
+import LoginWithGoogle from "./LoginWithGoogle.vue";
 
 interface IProps {}
 
@@ -28,6 +30,18 @@ const { isValid, errors } = useValidateLogin(userData);
 // pinia store
 const authStore = useAuthStore();
 
+onMounted(() => {
+  // Automatically detects when the user returns from Google
+  supabase.auth.onAuthStateChange((event, session) => {
+    authStore.setUserSession(session);
+    authStore.setUser(session?.user || null);
+
+    if (event === "SIGNED_IN") {
+      router.push("/dashboard");
+    }
+  });
+});
+
 // handlers
 const handleSubmit = async () => {
   formError.value = ""; // Reset error before new attempt
@@ -42,6 +56,8 @@ const handleSubmit = async () => {
 
     if (data?.session) {
       authStore.setUserSession(data.session);
+      authStore.setUser(data.user);
+
       router.push("/dashboard");
     }
   } catch (error) {
@@ -94,6 +110,7 @@ const handleSubmit = async () => {
           <span class="loader" v-if="isLoading"></span
         ></Button>
       </form>
+      <LoginWithGoogle />
       <p class="text-primary-foreground text-center font-medium">
         Don't have an account?
         <RouterLink to="/register" class="text-primary underline"

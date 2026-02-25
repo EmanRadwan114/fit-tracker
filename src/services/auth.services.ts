@@ -1,4 +1,3 @@
-import { useAuthStore } from "@/stores/auth.store";
 import type { ILogin, IRegister } from "@/types/auth.types";
 import { supabase } from "@/utils/supabase";
 
@@ -23,6 +22,22 @@ export const userRegister = async (userData: IRegister) => {
 // login
 export const userLogin = async (credentials: ILogin) => {
   const data = await supabase.auth.signInWithPassword(credentials);
+  return data;
+};
+
+export const userLoginWithGoogle = async () => {
+  const data = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      queryParams: {
+        access_type: "offline",
+        prompt: "select_account",
+      },
+      redirectTo: window.location.origin,
+      skipBrowserRedirect: false,
+    },
+  });
+
   return data;
 };
 

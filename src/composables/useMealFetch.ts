@@ -59,8 +59,8 @@ export function useMealSearch() {
 
           searchResults.value = cachedData || apiData;
         }
-      } catch (error) {
-        toast.error("Failed to fetch meals");
+      } catch (error: any) {
+        toast.error(error.message || "Failed to fetch meals");
       } finally {
         isSearching.value = false;
       }

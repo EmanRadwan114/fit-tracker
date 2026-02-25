@@ -4,6 +4,7 @@
   --primary: rgb(48, 126, 85);
   --text-primary: rgb(30, 32, 31);
   --gray-bg: rgb(235, 246, 241);
+  --red: #e4c18a;
 }
 
 @theme inline {
