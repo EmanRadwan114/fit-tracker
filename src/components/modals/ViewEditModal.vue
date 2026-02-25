@@ -57,7 +57,7 @@ const formFields = [
     label: "Name",
     type: "text",
     isNested: true,
-    isReadOnly: false,
+    isReadOnly: true,
   },
   {
     id: "categories",

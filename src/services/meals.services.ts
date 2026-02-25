@@ -3,7 +3,7 @@ import { supabase, supabaseKey } from "@/utils/supabase";
 // get meals
 export const fetchMealData = async (searchTerm: string) => {
   const response = await fetch(
-    `https://aulmhefinbmppfiouebn.functions.supabase.co/searchMeals?searchTerm=${searchTerm}`,
+    `https://aulmhefinbmppfiouebn.supabase.co/functions/v1/searchMeals?searchTerm=${searchTerm}`,
     {
       headers: {
         apikey: supabaseKey,
